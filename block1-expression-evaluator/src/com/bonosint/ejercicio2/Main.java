@@ -3,14 +3,17 @@ package com.bonosint.ejercicio2;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
 
-    private static String tipoDeOperacion(String fila){
+    private static String tipoDeOperacion(String fila) throws ParseException {
         String[] partes = fila.split(" ");
 
         if(partes.length > 0){
@@ -41,6 +44,7 @@ public class Main {
 
     private static String calcularNum(String[] partes){
         int total = Integer.parseInt(partes[0]);
+
         for(int i = 0; i < partes.length; i++){
             if(i % 2 != 0 && i+1 < partes.length){
                 switch (partes[i]){
@@ -64,7 +68,9 @@ public class Main {
     }
 
     private static String tratarCadena(String[] partes){
+        //QUITO LAS COMILLAS DEL PRINCIPIO Y DEL FINAL
         String resultado = partes[0].substring(1,partes[0].length()-1);
+
         for(int i = 0; i < partes.length; i++) {
             if (i % 2 != 0 && i + 1 < partes.length) {
                 switch (partes[i]) {
@@ -78,11 +84,31 @@ public class Main {
             }
         }
 
-       return "Resultado= "+resultado;
+       return "Resultado = "+resultado;
     }
 
-    private static String tratarFecha(String[] partes){
-        return "Tratando fecha";
+    private static String tratarFecha(String[] partes) throws ParseException {
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+        Date fecha1,fecha2;
+        boolean resultado = false;
+
+        for(int i = 0; i < partes.length; i++) {
+            if (i % 2 != 0 && i + 1 < partes.length) {
+                switch (partes[i]) {
+                    case "<":
+                        fecha1 = formato.parse(partes[i-1]);
+                        fecha2 = formato.parse(partes[i+1]);
+                        resultado = fecha1.before(fecha2);
+                        break;
+                    case ">":
+                        fecha1 = formato.parse(partes[i-1]);
+                        fecha2 = formato.parse(partes[i+1]);
+                        resultado =  fecha1.after(fecha2);
+                        break;
+                }
+            }
+        }
+        return "Resultado = "+(resultado ? "Correcto" : "Incorrecto");
     }
 
     public static List<String> leerFichero(){
@@ -105,7 +131,7 @@ public class Main {
         return filas;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         List<String> filas = leerFichero();
 
         for(String fila : filas){
