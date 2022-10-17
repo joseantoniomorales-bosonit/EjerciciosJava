@@ -3,7 +3,6 @@ package com.bonosint.ejercicio2;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -65,7 +64,21 @@ public class Main {
     }
 
     private static String tratarCadena(String[] partes){
-       return "Tratando cadena";
+        String resultado = partes[0].substring(1,partes[0].length()-1);
+        for(int i = 0; i < partes.length; i++) {
+            if (i % 2 != 0 && i + 1 < partes.length) {
+                switch (partes[i]) {
+                    case "+":
+                        resultado += partes[i + 1].substring(1, partes[i + 1].length() - 1);
+                        break;
+                    case "*":
+                        resultado += partes[i + 1].substring(1, partes[i + 1].length() - 1) + partes[i + 1].substring(1, partes[i + 1].length() - 1);
+                        break;
+                }
+            }
+        }
+
+       return "Resultado= "+resultado;
     }
 
     private static String tratarFecha(String[] partes){
