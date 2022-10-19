@@ -124,6 +124,9 @@ public class Main {
             while((fila=br.readLine()) != null){
                 filas.add(fila);
             }
+
+            fr.close();
+            br.close();
         }catch (Exception e){
             e.printStackTrace();
         }
