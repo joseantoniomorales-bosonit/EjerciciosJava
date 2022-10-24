@@ -8,12 +8,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 public class Block5CommandLineRunnerApplication implements CommandLineRunner {
 
+	@Autowired
+	private Clase3 c3;
 	private static final Logger log = LoggerFactory.getLogger(Block5CommandLineRunnerApplication.class);
 
 	public static void main(String[] args) {
@@ -29,10 +32,13 @@ public class Block5CommandLineRunnerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		String[] saludo = {"Soy la tercera clase"};
-		Clase3 c3 = new Clase3();
-
 		ejecutame();
-		c3.ejecutame3(saludo);
+		saludo3();
+	}
+
+	@Bean
+	CommandLineRunner saludo3 (){
+		String[] saludo = {"Soy la tercera clase"};
+		return c3.ejecutame3(saludo);
 	}
 }

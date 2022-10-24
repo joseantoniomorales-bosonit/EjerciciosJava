@@ -2,10 +2,9 @@ package com.bosonit.demo;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-@Repository
+@Component
 public class Clase2 {
 
     @Bean
