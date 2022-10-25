@@ -1,0 +1,54 @@
+2022-10-25 10:11:38,044 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-10-25 10:11:38,067 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-10-25 10:11:38,069 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-25 10:11:38,069 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.68]
+2022-10-25 10:11:38,193 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-25 10:11:38,194 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1497 ms
+2022-10-25 10:11:38,641 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2022-10-25 10:11:38,670 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2022-10-25 10:11:38,685 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:13:01,012 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-10-25 10:13:01,029 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-10-25 10:13:01,030 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-25 10:13:01,030 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.68]
+2022-10-25 10:13:01,141 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-25 10:13:01,142 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1375 ms
+2022-10-25 10:13:01,588 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2022-10-25 10:13:01,611 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2022-10-25 10:13:01,623 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:13:30,773 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-10-25 10:13:30,801 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-10-25 10:13:30,805 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-25 10:13:30,806 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.68]
+2022-10-25 10:13:30,952 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-25 10:13:30,953 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1611 ms
+2022-10-25 10:13:31,442 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2022-10-25 10:13:31,471 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2022-10-25 10:13:31,497 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:14:27,224 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:14:29,524 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is org.springframework.boot.web.server.PortInUseException: Port 8080 is already in use
+2022-10-25 10:14:29,567 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2022-10-25 10:15:02,017 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:15:39,403 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:16:08,240 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:16:28,765 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:22:19,432 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:22:49,596 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:23:11,664 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:25:15,654 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:26:15,799 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:26:42,289 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!
+2022-10-25 10:27:09,008 ERROR com.bosonit.block5logging.Block5LoggingApplication [main] Te ha reventado el programa!

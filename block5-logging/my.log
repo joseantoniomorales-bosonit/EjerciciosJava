@@ -1,0 +1,7 @@
+2022-10-25 09:18:32.765  INFO 16864 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-10-25 09:18:32.781  INFO 16864 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-10-25 09:18:32.782  INFO 16864 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.68]
+2022-10-25 09:18:32.857  INFO 16864 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-10-25 09:18:32.857  INFO 16864 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 982 ms
+2022-10-25 09:18:33.167  INFO 16864 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-10-25 09:18:33.175 ERROR 16864 --- [main] c.b.b.Block5LoggingApplication           : Te ha reventado el programa!
