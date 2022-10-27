@@ -1,8 +1,10 @@
 package com.bosonit.block6personcontrollers.controllers;
 
+import com.bosonit.block6personcontrollers.services.Beans;
 import com.bosonit.block6personcontrollers.services.Ciudad;
 import com.bosonit.block6personcontrollers.services.Persona;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import java.util.List;
 @RestController
 public class Controlador1 {
     @Autowired
+    @Qualifier("bean1")
     Persona p;
 
     List<Ciudad> ciudades = new ArrayList<>();
@@ -32,7 +35,6 @@ public class Controlador1 {
         ciudades.add(new Ciudad("Sevilla",290));
         ciudades.add(new Ciudad("Granada",200));
         ciudades.add(new Ciudad("Huelva",120));
-        System.out.println(ciudades);
     }
 
     @PostMapping("/controlador1/addCiudad")
@@ -44,4 +46,10 @@ public class Controlador1 {
         return ciudades;
     }
 
+
+    @GetMapping("/controlador/bean/{bean}")
+    public Persona mostrarBean(@PathVariable String bean){
+        Beans b = new Beans();
+        return b.devolverBean(bean);
+    }
 }
