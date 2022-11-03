@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class PrincipalController {
 
     @GetMapping(value={"/**"})
-    public String entryOther(HttpServletRequest request, HttpServletResponse resp) throws IOException {
+    public ControllerObject entryOther(HttpServletRequest request, HttpServletResponse resp) throws IOException {
         if( request.getHeader("REDIRIGE") != null && request.getHeader("REDIRIGE").equals("SALTA")){
             resp.sendRedirect("/salta");
         }
@@ -26,7 +26,7 @@ public class PrincipalController {
         String urlOrigen = request.getRemoteAddr();
 
         ControllerObject controllerObject = new ControllerObject(path,getMap,headers,urlOrigen);
-        return controllerObject.toString();
+        return controllerObject;
     }
 
     @GetMapping(value={"/","one"})
