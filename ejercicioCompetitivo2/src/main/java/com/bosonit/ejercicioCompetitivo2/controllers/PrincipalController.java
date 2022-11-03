@@ -25,8 +25,7 @@ public class PrincipalController {
         Map<String,String> headers = Collections.list(request.getHeaderNames()).stream().collect(Collectors.toMap(h -> h, request::getHeader));
         String urlOrigen = request.getRemoteAddr();
 
-        ControllerObject controllerObject = new ControllerObject(path,getMap,headers,urlOrigen);
-        return controllerObject;
+        return  new ControllerObject(path,getMap,headers,urlOrigen);
     }
 
     @GetMapping(value={"/","one"})
