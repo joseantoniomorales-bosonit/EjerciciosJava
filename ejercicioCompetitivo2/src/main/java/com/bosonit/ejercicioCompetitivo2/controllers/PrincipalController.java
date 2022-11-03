@@ -17,7 +17,7 @@ public class PrincipalController {
 
     @GetMapping(value={"/**"})
     public String entryOther(HttpServletRequest request, HttpServletResponse resp) throws IOException {
-        if(request.getHeader("REDIRIGE").equals("SALTA")){
+        if( request.getHeader("REDIRIGE") != null && request.getHeader("REDIRIGE").equals("SALTA")){
             resp.sendRedirect("/salta");
         }
         List<String> path = Arrays.stream(request.getRequestURI().split("/")).toList();
