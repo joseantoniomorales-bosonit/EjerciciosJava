@@ -1,6 +1,5 @@
 package com.bosonit.block7crudvalidation.entities;
 
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;

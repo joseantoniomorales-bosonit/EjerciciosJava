@@ -64,7 +64,7 @@ public class PersonaRESTController {
 
     //ELIMINAR UNA PERSONA
     @DeleteMapping("/del/{id}")
-    public String deletePersona(@PathVariable(value = "id") Integer id){
+    public Object deletePersona(@PathVariable(value = "id") Integer id){
         return personaService.deletePersona(id);
     }
 }

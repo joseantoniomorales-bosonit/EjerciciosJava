@@ -53,7 +53,7 @@ public class PersonaService {
         return personaMod;
     }
 
-    public String deletePersona(int id){
+    public Object deletePersona(int id){
         Optional<PersonaEntity> persona = findById(id);
 
         if(persona.isPresent()){
@@ -61,7 +61,7 @@ public class PersonaService {
             return "Row deleted successfully";
         }
 
-        return "Error to delete row";
+        return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString());
     }
 
     public void personaValidation(PersonaEntity persona, String type) throws Exception {

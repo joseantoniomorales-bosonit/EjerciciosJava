@@ -19,4 +19,6 @@ public class PersonaDto implements Serializable {
 
     private LocalDate created_date;
     private LocalDate termination_date;
+
+
 }
