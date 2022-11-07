@@ -1,20 +1,25 @@
 package com.bosonit.block7crudvalidation.services;
 
 import com.bosonit.block7crudvalidation.entities.PersonaEntity;
+import com.bosonit.block7crudvalidation.error.CustomError;
 import com.bosonit.block7crudvalidation.repositories.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class PersonaService {
     @Autowired
     PersonaRepository personaRepository;
-
     public List<PersonaEntity> getAll(){
         return personaRepository.findAll();
     }
@@ -34,8 +39,18 @@ public class PersonaService {
         return persona;
     }
 
-    public void modifyPersona(){
+    public Object modifyPersona(int id_persona, PersonaEntity personaMod) throws Exception {
+        Optional<PersonaEntity> persona = findById(id_persona);
+        if(persona.isEmpty()){
+            return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString());
+        }
 
+        personaValidation(personaMod, "modify");
+        personaMod.setId_persona(id_persona);
+
+        personaRepository.save(personaMod);
+
+        return personaMod;
     }
 
     public String deletePersona(int id){
