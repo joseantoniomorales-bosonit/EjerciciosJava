@@ -5,14 +5,15 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name="CabeceraFra")
+@Table(name="Cabecera_Fra")
 @Data
 public class InvoiceHeaderEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn
     private ClientEntity client;
 
     @Column(name="ImporteFra")
