@@ -4,6 +4,7 @@ import com.bosonit.examen_JPA_cascada.dto.InvoiceHeaderDTO;
 import com.bosonit.examen_JPA_cascada.dto.InvoiceLinesDTO;
 import com.bosonit.examen_JPA_cascada.entities.ClientEntity;
 import com.bosonit.examen_JPA_cascada.entities.InvoiceHeaderEntity;
+import com.bosonit.examen_JPA_cascada.repositories.ClientRepository;
 import com.bosonit.examen_JPA_cascada.repositories.InvoiceHeaderRepository;
 import com.bosonit.examen_JPA_cascada.utils.IniDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import java.util.Optional;
 public class InvoiceHeaderService {
     @Autowired
     private InvoiceHeaderRepository invoiceHeaderRepository;
+    @Autowired
+    private ClientRepository clientRepository;
 
     public List<InvoiceHeaderDTO> findAll(){
         return IniDTO.iniInvoiceHeaderDTO(invoiceHeaderRepository.findAll());
@@ -33,14 +36,13 @@ public class InvoiceHeaderService {
     }
 
     public InvoiceHeaderDTO addInvoiceHeader(InvoiceHeaderEntity invoiceHeader){
+        Optional<ClientEntity> client = clientRepository.findById(invoiceHeader.getClient().getId());
+        invoiceHeader.setClient(client.get());
         invoiceHeaderRepository.save(invoiceHeader);
 
         return IniDTO.iniInvoiceHeaderDTO(invoiceHeader);
     }
 
-    public void addInvoiceHeader2(InvoiceHeaderEntity invoiceHeader){
-        System.out.println(invoiceHeader);
-    }
 
     public ResponseEntity<Object> delInvoiceHeader(int id){
         Optional<InvoiceHeaderEntity> invoiceHeader = invoiceHeaderRepository.findById(id);

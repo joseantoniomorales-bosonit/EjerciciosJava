@@ -27,13 +27,9 @@ public class InvoiceHeaderRESTController {
         return invoiceHeaderService.findById(id);
     }
 
-   /* @PostMapping("/create")
+    @PostMapping("/create")
     public InvoiceHeaderDTO addInvoiceHeader(@RequestBody InvoiceHeaderEntity invoiceHeader){
         return invoiceHeaderService.addInvoiceHeader(invoiceHeader);
-    }*/
-    @PostMapping("/create")
-    public void addInvoiceHeader(@RequestBody InvoiceHeaderEntity invoiceHeader){
-         invoiceHeaderService.addInvoiceHeader2(invoiceHeader);
     }
 
     @DeleteMapping("/delete/{id}")

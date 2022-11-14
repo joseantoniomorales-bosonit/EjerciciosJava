@@ -36,7 +36,7 @@ public class IniDTO {
         invoiceHeaderDTO.setId(invoiceHeader.getId());
         invoiceHeaderDTO.setImporteFra(invoiceHeader.getAmount());
         System.out.println(iniClientDTO(invoiceHeader.getClient()));
-       // invoiceHeaderDTO.setClientDTO(iniClientDTO(invoiceHeader.getClient()));
+        invoiceHeaderDTO.setClientDTO(iniClientDTO(invoiceHeader.getClient()));
 
         return invoiceHeaderDTO;
     }
