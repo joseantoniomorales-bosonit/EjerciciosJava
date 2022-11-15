@@ -1,10 +1,13 @@
 package com.bosonit.block7crudvalidation2.content.person.application.mapper;
 
 import com.bosonit.block7crudvalidation2.content.person.domain.entity.PersonEntity;
+import com.bosonit.block7crudvalidation2.content.person.domain.repository.PersonRepository;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.input.PersonInputDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PersonDTOToEntity {
     public static PersonEntity iniPersonEntity(PersonInputDTO person){

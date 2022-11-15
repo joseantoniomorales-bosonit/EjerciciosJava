@@ -19,5 +19,4 @@ public class PersonOutputDTO implements Serializable {
 
     private LocalDate created_date;
     private LocalDate termination_date;
-
 }
