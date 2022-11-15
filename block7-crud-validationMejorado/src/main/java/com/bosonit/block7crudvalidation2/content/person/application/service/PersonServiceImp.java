@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -34,13 +36,19 @@ public class PersonServiceImp implements PersonService{
         return personRepository.findByUsername(username);
     }
 
+    @Transactional(rollbackOn = SQLException.class)
     public PersonOutputDTO addPerson(PersonInputDTO personInputDTO) throws Exception {
         personValidation(personInputDTO, "create");
 
         PersonEntity person = PersonDTOToEntity.iniPersonEntity(personInputDTO);
-        personRepository.save(person);
-        //DTO
-        return PersonEntityToDTO.iniPersonDTO(person);
+        try{
+            personRepository.save(person);
+            //DTO
+            return PersonEntityToDTO.iniPersonDTO(person);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
+        }
     }
 
     public ResponseEntity<Object> modifyPerson(int id_persona, PersonInputDTO personModDTO) throws Exception {

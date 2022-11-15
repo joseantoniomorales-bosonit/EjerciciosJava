@@ -1,6 +1,5 @@
 package com.bosonit.block7crudvalidation2.content.professor.application.mapper;
 
-import com.bosonit.block7crudvalidation2.content.person.application.mapper.PersonDTOToEntity;
 import com.bosonit.block7crudvalidation2.content.professor.domain.entity.ProfessorEntity;
 import com.bosonit.block7crudvalidation2.content.professor.infrastructure.dto.input.ProfessorInputDTO;
 
