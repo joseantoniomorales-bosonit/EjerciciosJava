@@ -37,8 +37,11 @@ public class InvoiceHeaderService {
 
     public InvoiceHeaderDTO addInvoiceHeader(InvoiceHeaderEntity invoiceHeader){
         Optional<ClientEntity> client = clientRepository.findById(invoiceHeader.getClient().getId());
-        invoiceHeader.setClient(client.get());
-        invoiceHeaderRepository.save(invoiceHeader);
+
+        if(client.isPresent()){
+            invoiceHeader.setClient(client.get());
+            invoiceHeaderRepository.save(invoiceHeader);
+        }
 
         return IniDTO.iniInvoiceHeaderDTO(invoiceHeader);
     }
