@@ -18,7 +18,7 @@ public class InvoiceLinesEntity implements Serializable {
     private Integer id;
 
     @NotNull
-    @Column(name="ProNomb")
+    @Column(name="ProNomb", nullable = false)
     private String ProName;
 
     @Column(name="Cantidad")

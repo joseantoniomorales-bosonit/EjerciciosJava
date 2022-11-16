@@ -15,7 +15,7 @@ public class ClientEntity {
     @GeneratedValue
     private Integer id;
 
-    @Column(name="nombre")
+    @Column(name="nombre", length = 100, nullable = false)
     private String name;
 
     public ClientEntity(String name) {
