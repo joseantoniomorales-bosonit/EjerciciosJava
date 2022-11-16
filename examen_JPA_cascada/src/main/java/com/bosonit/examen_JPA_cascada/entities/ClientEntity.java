@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class ClientEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Integer id;
 
     @Column(name="nombre")

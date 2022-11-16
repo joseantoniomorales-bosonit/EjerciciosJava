@@ -18,8 +18,9 @@ public class InvoiceHeaderRESTController {
     private InvoiceHeaderService invoiceHeaderService;
 
     @GetMapping("")
-    public List<InvoiceHeaderDTO> findAllInvoices(){
-        return invoiceHeaderService.findAll();
+    public ResponseEntity<Object> findAllInvoices(){
+
+        return ResponseEntity.ok().body(invoiceHeaderService.findAll());
     }
 
     @GetMapping("/{id}")

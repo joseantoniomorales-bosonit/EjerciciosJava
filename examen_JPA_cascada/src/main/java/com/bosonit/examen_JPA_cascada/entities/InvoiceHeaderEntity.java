@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class InvoiceHeaderEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue
     private Integer id;
 
     @ManyToOne

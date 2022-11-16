@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class InvoiceLinesEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue
     private Integer id;
 
     @NotNull

@@ -25,6 +25,10 @@ public class InvoiceHeaderService {
         return IniDTO.iniInvoiceHeaderDTO(invoiceHeaderRepository.findAll());
     }
 
+    public Optional<InvoiceHeaderEntity> findByIdEntity(int id){
+        return invoiceHeaderRepository.findById(id);
+    }
+
     public ResponseEntity<Object> findById(int id){
         Optional<InvoiceHeaderEntity> invoiceHeader = invoiceHeaderRepository.findById(id);
 
