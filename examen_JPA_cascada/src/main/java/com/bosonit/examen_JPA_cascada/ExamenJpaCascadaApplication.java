@@ -28,6 +28,7 @@ public class ExamenJpaCascadaApplication {
 
 		List<InvoiceLinesEntity> invoiceLinesEntityList = new ArrayList<>();
 		invoiceLinesEntityList.add(new InvoiceLinesEntity("Producto",22.22,22.22));
+		invoiceLinesEntityList.add(new InvoiceLinesEntity("Producto2",22.22,22.22));
 
 		InvoiceHeaderEntity invoiceHeader = new InvoiceHeaderEntity(client1,22.22, invoiceLinesEntityList);
 		invoiceHeaderService.addInvoiceHeader(invoiceHeader);
