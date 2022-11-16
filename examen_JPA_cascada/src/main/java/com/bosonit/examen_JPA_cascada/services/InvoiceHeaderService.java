@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +41,9 @@ public class InvoiceHeaderService {
         return ResponseEntity.status(404).body("Invoice header not found");
     }
 
-    public InvoiceHeaderDTO addInvoiceHeader(InvoiceHeaderEntity invoiceHeader){
+    @Transactional(rollbackOn = SQLException.class)
+    public InvoiceHeaderDTO addInvoiceHeader(InvoiceHeaderEntity invoiceHeader) throws SQLException {
+        try{
         Optional<ClientEntity> client = clientRepository.findById(invoiceHeader.getClient().getId());
 
         if(client.isPresent()){
@@ -48,17 +52,26 @@ public class InvoiceHeaderService {
         }
 
         return IniDTO.iniInvoiceHeaderDTO(invoiceHeader);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
+        }
     }
 
+    @Transactional(rollbackOn = SQLException.class)
+    public ResponseEntity<Object> delInvoiceHeader(int id) throws SQLException {
+        try{
+            Optional<InvoiceHeaderEntity> invoiceHeader = invoiceHeaderRepository.findById(id);
 
-    public ResponseEntity<Object> delInvoiceHeader(int id){
-        Optional<InvoiceHeaderEntity> invoiceHeader = invoiceHeaderRepository.findById(id);
+            if(invoiceHeader.isPresent()){
+                invoiceHeaderRepository.delete(invoiceHeader.get());
+                return ResponseEntity.ok().body("Invoice header removed successfully");
+            }
 
-        if(invoiceHeader.isPresent()){
-            invoiceHeaderRepository.delete(invoiceHeader.get());
-            return ResponseEntity.ok().body("Invoice header removed successfully");
+            return ResponseEntity.status(404).body("Invoice header not found");
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
         }
-
-        return ResponseEntity.status(404).body("Invoice header not found");
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class InvoiceLinesRESTController {
     InvoiceHeaderService invoiceHeaderService;
 
     @PostMapping("/{idInvoiceHeader}")
-    public ResponseEntity<Object> addInvoiceLines(@PathVariable(name="idInvoiceHeader") int idInvoiceHeader, @RequestBody InvoiceLinesEntity invoiceLines){
+    public ResponseEntity<Object> addInvoiceLines(@PathVariable(name="idInvoiceHeader") int idInvoiceHeader, @RequestBody InvoiceLinesEntity invoiceLines) throws SQLException {
         InvoiceLinesEntity invoiceLinesParam = invoiceLinesRepository.save(invoiceLines);
         Optional<InvoiceHeaderEntity> invoiceHeaderOptional = invoiceHeaderService.findByIdEntity(idInvoiceHeader);
 

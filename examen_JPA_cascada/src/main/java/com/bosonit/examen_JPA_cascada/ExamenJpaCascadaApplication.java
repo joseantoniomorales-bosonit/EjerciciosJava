@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import javax.annotation.PostConstruct;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class ExamenJpaCascadaApplication {
 	InvoiceHeaderService invoiceHeaderService;
 
 	@Bean
-	public void iniSQL(){
+	public void iniSQL() throws SQLException {
 		ClientEntity client1 = new ClientEntity("Jose");
 		clientService.addClient(client1);
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -26,12 +27,12 @@ public class ClientRESTController {
     }
 
     @PostMapping("/create")
-    public ClientDTO addClient(@RequestBody ClientEntity client){
+    public ClientDTO addClient(@RequestBody ClientEntity client) throws SQLException {
         return clientService.addClient(client);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> delClient(@PathVariable(value="id") Integer id){
+    public ResponseEntity<Object> delClient(@PathVariable(value="id") Integer id) throws SQLException {
         return clientService.delClient(id);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -29,12 +30,12 @@ public class InvoiceHeaderRESTController {
     }
 
     @PostMapping("/create")
-    public InvoiceHeaderDTO addInvoiceHeader(@RequestBody InvoiceHeaderEntity invoiceHeader){
+    public InvoiceHeaderDTO addInvoiceHeader(@RequestBody InvoiceHeaderEntity invoiceHeader) throws SQLException {
         return invoiceHeaderService.addInvoiceHeader(invoiceHeader);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> delInvoiceHeader(@PathVariable(value="id") Integer id){
+    public ResponseEntity<Object> delInvoiceHeader(@PathVariable(value="id") Integer id) throws SQLException {
         return invoiceHeaderService.delInvoiceHeader(id);
     }
 }

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,20 +32,31 @@ public class ClientService {
         return ResponseEntity.status(404).body("Client not found");
     }
 
-    public ClientDTO addClient(ClientEntity client){
-        clientRepository.save(client);
+    @Transactional(rollbackOn = SQLException.class)
+    public ClientDTO addClient(ClientEntity client) throws SQLException {
+        try{
+            clientRepository.save(client);
 
-        return IniDTO.iniClientDTO(client);
-    }
-
-    public ResponseEntity<Object> delClient(int id){
-        Optional<ClientEntity> client = clientRepository.findById(id);
-
-        if(client.isPresent()){
-            clientRepository.delete(client.get());
-            return ResponseEntity.ok().body("Client removed successfully");
+            return IniDTO.iniClientDTO(client);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
         }
+    }
+    @Transactional(rollbackOn = SQLException.class)
+    public ResponseEntity<Object> delClient(int id) throws SQLException {
+        try{
+            Optional<ClientEntity> client = clientRepository.findById(id);
 
-        return ResponseEntity.status(404).body("Client not found");
+            if(client.isPresent()){
+                clientRepository.delete(client.get());
+                return ResponseEntity.ok().body("Client removed successfully");
+            }
+
+            return ResponseEntity.status(404).body("Client not found");
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
+        }
     }
 }
