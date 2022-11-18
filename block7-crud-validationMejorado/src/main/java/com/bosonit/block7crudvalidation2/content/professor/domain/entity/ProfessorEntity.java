@@ -10,12 +10,12 @@ import javax.persistence.*;
 @Data
 public class ProfessorEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue
     private Integer id_profesor;
 
     @Column(name="comments")
     private String comments;
-    @Column(name="branch")
+    @Column(name="branch", nullable = false)
     private String branch;
 
     @OneToOne

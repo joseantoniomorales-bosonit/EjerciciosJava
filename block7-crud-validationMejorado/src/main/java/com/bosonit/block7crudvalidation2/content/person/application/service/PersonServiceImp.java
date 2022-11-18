@@ -38,36 +38,45 @@ public class PersonServiceImp implements PersonService{
 
     @Transactional(rollbackOn = SQLException.class)
     public PersonOutputDTO addPerson(PersonInputDTO personInputDTO) throws Exception {
-        personValidation(personInputDTO, "create");
+        personValidation(personInputDTO, "create");//validar campos de Person
 
-        PersonEntity person = PersonDTOToEntity.iniPersonEntity(personInputDTO);
+        PersonEntity person = PersonDTOToEntity.iniPersonEntity(personInputDTO);//Entidad para poder guardar
+
+        //para que se cumpla el rollback si hay un sqlException
         try{
             personRepository.save(person);
-            //DTO
-            return PersonEntityToDTO.iniPersonDTO(person);
+
+            return PersonEntityToDTO.iniPersonDTO(person);//DTO
         }catch (Exception e){
             e.printStackTrace();
             throw new SQLException();
         }
     }
 
+    @Transactional(rollbackOn = SQLException.class)
     public ResponseEntity<Object> modifyPerson(int id_persona, PersonInputDTO personModDTO) throws Exception {
-        Optional<PersonEntity> persona = personRepository.findById(id_persona);
+        try{
+            Optional<PersonEntity> persona = personRepository.findById(id_persona);
 
-        if(persona.isEmpty()){
-            return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString());
+            if(persona.isEmpty()){
+                return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString());
+            }
+
+            personValidation(personModDTO, "modify");
+
+            PersonEntity personMod = PersonDTOToEntity.iniPersonEntity(personModDTO);
+            personMod.setId_person(id_persona);
+            personRepository.save(personMod);
+
+            //DTO
+            return ResponseEntity.ok().body(PersonEntityToDTO.iniPersonDTO(personMod));
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
         }
-
-        personValidation(personModDTO, "modify");
-
-        PersonEntity personMod = PersonDTOToEntity.iniPersonEntity(personModDTO);
-        personMod.setId_person(id_persona);
-        personRepository.save(personMod);
-
-        //DTO
-        return ResponseEntity.ok().body(PersonEntityToDTO.iniPersonDTO(personMod));
     }
 
+    @Transactional(rollbackOn = SQLException.class)
     public ResponseEntity<Object> deletePerson(int id){
         Optional<PersonEntity> person = personRepository.findById(id);
 

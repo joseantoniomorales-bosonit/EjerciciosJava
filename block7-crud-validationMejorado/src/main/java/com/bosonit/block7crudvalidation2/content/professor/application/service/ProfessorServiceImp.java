@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -39,34 +41,59 @@ public class ProfessorServiceImp implements ProfessorService{
         return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString());
     }
 
-    public ResponseEntity<Object> create(ProfessorInputDTO professor) throws Exception{
-        //Si el objeto persona es null mando un responseEntity con un body avisando de que el campo id de persona no puede estar vacio
-        Optional<PersonEntity> person = personRepository.findById(professor.getPerson().getId_person());
-        if(person.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Person)").toString()); }
+    @Transactional(rollbackOn = SQLException.class)
+    public ResponseEntity<Object> createProfessor(ProfessorInputDTO professor) throws Exception{
+        try{
+            //Si el objeto persona es null mando un responseEntity con un body avisando de que el campo id de persona no puede estar vacio
+            Optional<PersonEntity> person = personRepository.findById(professor.getPerson().getId_person());
+            if(person.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Person)").toString()); }
 
-        professorValidation(professor);//Validacion
+            professorValidation(professor);//Validacion
 
-        professor.setPerson(person.get());
-        ProfessorEntity professorEntity = ProfessorDTOToEntity.iniProfessorEntity(professor);
+            professor.setPerson(person.get());
+            ProfessorEntity professorEntity = ProfessorDTOToEntity.iniProfessorEntity(professor);
 
-        professorRepository.save(professorEntity);
+            professorRepository.save(professorEntity);
 
-        return ResponseEntity.ok().body(ProfessorEntityToDTO.iniProfessorDTO(professorEntity));
-    }
-
-    public void modify(int id, ProfessorEntity profesor){
-
-    }
-
-    public ResponseEntity<Object> delete(int id_profesor){
-        Optional<ProfessorEntity> professor = professorRepository.findById(id_profesor);
-
-        if(professor.isPresent()){
-            professorRepository.delete(professor.get());
-            return ResponseEntity.ok().body("Row deleted successfully");
+            return ResponseEntity.ok().body(ProfessorEntityToDTO.iniProfessorDTO(professorEntity));
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
         }
+    }
 
-        return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException"));
+    public ResponseEntity<Object> modifyProfessor(int id, ProfessorInputDTO professorInputDTO) throws Exception{
+        Optional<ProfessorEntity> professorOptional = professorRepository.findById(id);
+        Optional<PersonEntity> person = personRepository.findById(professorInputDTO.getPerson().getId_person());
+
+        if(professorOptional.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Professor ID)")); }
+        if(person.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Person ID)")); }
+
+        professorValidation(professorInputDTO);
+
+        ProfessorEntity professorMod = ProfessorDTOToEntity.iniProfessorEntity(professorInputDTO);
+        professorMod.setId_profesor(professorOptional.get().getId_profesor());
+        professorMod.setPerson(person.get());
+        professorRepository.save(professorMod);
+
+        return ResponseEntity.ok().body(professorMod);
+    }
+
+    @Transactional(rollbackOn = SQLException.class)
+    public ResponseEntity<Object> deleteProfessor(int id_professor) throws Exception{
+        try{
+            Optional<ProfessorEntity> professor = professorRepository.findById(id_professor);
+
+            if(professor.isPresent()){
+                professorRepository.delete(professor.get());
+                return ResponseEntity.ok().body("Row deleted successfully");
+            }
+
+            return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException"));
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
+        }
     }
 
     public void professorValidation(ProfessorInputDTO professor) throws Exception {
