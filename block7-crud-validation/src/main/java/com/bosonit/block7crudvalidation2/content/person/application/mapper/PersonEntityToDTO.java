@@ -1,6 +1,6 @@
 package com.bosonit.block7crudvalidation2.content.person.application.mapper;
 
-import com.bosonit.block7crudvalidation2.content.person.domain.entity.PersonEntity;
+import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.output.PersonOutputDTO;
 
 import java.util.ArrayList;

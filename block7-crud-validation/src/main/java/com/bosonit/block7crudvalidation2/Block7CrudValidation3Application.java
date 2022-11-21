@@ -19,5 +19,4 @@ public class Block7CrudValidation3Application implements CommandLineRunner {
 	public void run(String[] args) throws Exception{
 		startData.iniSQL();
 	}
-
 }

@@ -3,8 +3,8 @@ package com.bosonit.block7crudvalidation2.content.person.application.service;
 
 import com.bosonit.block7crudvalidation2.content.person.application.mapper.PersonDTOToEntity;
 import com.bosonit.block7crudvalidation2.content.person.application.mapper.PersonEntityToDTO;
-import com.bosonit.block7crudvalidation2.content.person.domain.entity.PersonEntity;
-import com.bosonit.block7crudvalidation2.content.person.domain.repository.PersonRepository;
+import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
+import com.bosonit.block7crudvalidation2.content.person.infrastructure.repository.PersonRepository;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.input.PersonInputDTO;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.output.PersonOutputDTO;
 import com.bosonit.block7crudvalidation2.exception.CustomError;
@@ -62,9 +62,9 @@ public class PersonServiceImp implements PersonService{
                 return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString());
             }
 
-            personValidation(personModDTO, "modify");
+            personValidation(personModDTO, "modify");//Validacion
 
-            PersonEntity personMod = PersonDTOToEntity.iniPersonEntity(personModDTO);
+            PersonEntity personMod = PersonDTOToEntity.iniPersonEntity(personModDTO);//Paso el DTO a Entidad
             personMod.setId_person(id_persona);
             personRepository.save(personMod);
 

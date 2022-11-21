@@ -1,6 +1,6 @@
 package com.bosonit.block7crudvalidation2.content.professor.infrastructure.dto.input;
 
-import com.bosonit.block7crudvalidation2.content.person.domain.entity.PersonEntity;
+import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
 import lombok.Data;
 
 import java.io.Serializable;

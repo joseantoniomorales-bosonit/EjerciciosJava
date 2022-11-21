@@ -1,12 +1,12 @@
 package com.bosonit.block7crudvalidation2.content.professor.application.service;
 
 
-import com.bosonit.block7crudvalidation2.content.person.domain.entity.PersonEntity;
-import com.bosonit.block7crudvalidation2.content.person.domain.repository.PersonRepository;
+import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
+import com.bosonit.block7crudvalidation2.content.person.infrastructure.repository.PersonRepository;
 import com.bosonit.block7crudvalidation2.content.professor.application.mapper.ProfessorDTOToEntity;
 import com.bosonit.block7crudvalidation2.content.professor.application.mapper.ProfessorEntityToDTO;
-import com.bosonit.block7crudvalidation2.content.professor.domain.entity.ProfessorEntity;
-import com.bosonit.block7crudvalidation2.content.professor.domain.repository.ProfessorRepository;
+import com.bosonit.block7crudvalidation2.content.professor.domain.ProfessorEntity;
+import com.bosonit.block7crudvalidation2.content.professor.infrastructure.repository.ProfessorRepository;
 import com.bosonit.block7crudvalidation2.content.professor.infrastructure.dto.input.ProfessorInputDTO;
 import com.bosonit.block7crudvalidation2.content.professor.infrastructure.dto.output.ProfessorOutputDTO;
 import com.bosonit.block7crudvalidation2.exception.CustomError;

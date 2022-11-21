@@ -1,6 +1,6 @@
 package com.bosonit.block7crudvalidation2.content.professor.application.mapper;
 
-import com.bosonit.block7crudvalidation2.content.professor.domain.entity.ProfessorEntity;
+import com.bosonit.block7crudvalidation2.content.professor.domain.ProfessorEntity;
 import com.bosonit.block7crudvalidation2.content.professor.infrastructure.dto.input.ProfessorInputDTO;
 
 import java.util.ArrayList;

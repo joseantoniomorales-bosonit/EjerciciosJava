@@ -1,7 +1,7 @@
 package com.bosonit.block7crudvalidation2.content.professor.application.mapper;
 
 import com.bosonit.block7crudvalidation2.content.person.application.mapper.PersonEntityToDTO;
-import com.bosonit.block7crudvalidation2.content.professor.domain.entity.ProfessorEntity;
+import com.bosonit.block7crudvalidation2.content.professor.domain.ProfessorEntity;
 import com.bosonit.block7crudvalidation2.content.professor.infrastructure.dto.output.ProfessorOutputDTO;
 
 import java.util.ArrayList;
