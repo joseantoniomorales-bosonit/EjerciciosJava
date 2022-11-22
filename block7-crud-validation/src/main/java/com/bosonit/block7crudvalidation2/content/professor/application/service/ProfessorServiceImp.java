@@ -43,16 +43,16 @@ public class ProfessorServiceImp implements ProfessorService{
 
     @Transactional(rollbackOn = SQLException.class)
     public ResponseEntity<Object> createProfessor(ProfessorInputDTO professor) throws Exception{
+        //Si el objeto persona es null mando un responseEntity con un body avisando de que el campo id de persona no puede estar vacio
+        Optional<PersonEntity> person = personRepository.findById(professor.getPerson().getId_person());
+        if(person.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Person)").toString()); }
+
+        professorValidation(professor);//Validacion
+
+        professor.setPerson(person.get());
+        ProfessorEntity professorEntity = ProfessorDTOToEntity.iniProfessorEntity(professor);
+
         try{
-            //Si el objeto persona es null mando un responseEntity con un body avisando de que el campo id de persona no puede estar vacio
-            Optional<PersonEntity> person = personRepository.findById(professor.getPerson().getId_person());
-            if(person.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Person)").toString()); }
-
-            professorValidation(professor);//Validacion
-
-            professor.setPerson(person.get());
-            ProfessorEntity professorEntity = ProfessorDTOToEntity.iniProfessorEntity(professor);
-
             professorRepository.save(professorEntity);
 
             return ResponseEntity.ok().body(ProfessorEntityToDTO.iniProfessorDTO(professorEntity));
@@ -62,6 +62,7 @@ public class ProfessorServiceImp implements ProfessorService{
         }
     }
 
+    @Transactional(rollbackOn = SQLException.class)
     public ResponseEntity<Object> modifyProfessor(int id, ProfessorInputDTO professorInputDTO) throws Exception{
         Optional<ProfessorEntity> professorOptional = professorRepository.findById(id);
         Optional<PersonEntity> person = personRepository.findById(professorInputDTO.getPerson().getId_person());
@@ -74,9 +75,15 @@ public class ProfessorServiceImp implements ProfessorService{
         ProfessorEntity professorMod = ProfessorDTOToEntity.iniProfessorEntity(professorInputDTO);
         professorMod.setId_profesor(professorOptional.get().getId_profesor());
         professorMod.setPerson(person.get());
-        professorRepository.save(professorMod);
 
-        return ResponseEntity.ok().body(professorMod);
+        try{
+            professorRepository.save(professorMod);
+
+            return ResponseEntity.ok().body(professorMod);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
+        }
     }
 
     @Transactional(rollbackOn = SQLException.class)

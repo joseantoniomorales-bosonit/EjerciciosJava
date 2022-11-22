@@ -37,8 +37,13 @@ public class StudentRESTController {
     }
 
     @PutMapping("/{id}")
-    public void modify(@PathVariable(name="id") int id, @RequestBody StudentInputDTO studentInputDTO){
-        studentService.modifyStuedent(id, studentInputDTO);
+    public ResponseEntity<Object> modify(@PathVariable(name="id") int id, @RequestBody StudentInputDTO studentInputDTO) throws Exception{
+        try{
+            return studentService.modifyStuedent(id, studentInputDTO);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(422).body(new CustomError(new Date(), 422,"UnprocessableEntityException").toString());
+        }
     }
 
     @DeleteMapping("/{id}")

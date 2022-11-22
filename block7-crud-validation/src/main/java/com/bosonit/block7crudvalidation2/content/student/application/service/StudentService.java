@@ -7,6 +7,6 @@ public interface StudentService {
     ResponseEntity<Object> findAll();
     ResponseEntity<Object> findById(int id, String outputType);
     ResponseEntity<Object> createStudent(StudentInputDTO studentInputDTO) throws Exception;
-    void modifyStuedent(int id, StudentInputDTO studentInputDTO);
-    ResponseEntity<Object> deleteStudent(int id);
+    ResponseEntity<Object> modifyStuedent(int id, StudentInputDTO studentInputDTO) throws Exception;
+    ResponseEntity<Object> deleteStudent(int id) throws Exception;
 }

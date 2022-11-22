@@ -15,7 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
+import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -52,7 +53,10 @@ public class StudentServiceImp implements StudentService {
         }
     }
 
+    @Transactional(rollbackOn = SQLException.class)
     public ResponseEntity<Object> createStudent(StudentInputDTO studentInputDTO) throws Exception{
+        validationStudent(studentInputDTO);//Validacion de student
+
         Optional<ProfessorEntity> professor = professorRepository.findById(studentInputDTO.getProfessor().getId_profesor());
         Optional<PersonEntity> person = personRepository.findById(studentInputDTO.getPerson().getId_person());
 
@@ -60,30 +64,62 @@ public class StudentServiceImp implements StudentService {
         if(professor.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException -> Professor").toString()); }
         if(person.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException -> Person").toString()); }
 
-        validationStudent(studentInputDTO);//Validacion de student
         StudentEntity studentEntity = StudentDTOToEntity.iniStudentEntity(studentInputDTO);
         studentEntity.setProfessor(professor.get());//Seteo el objeto professor con el que tiene relacion
         studentEntity.setPerson(person.get());//Lo mismo pero con person
 
-        studentRepository.save(studentEntity);
-
-        return ResponseEntity.ok().body(StudentEntityToDTO.iniStudentDTO(studentEntity));
+        try{
+            studentRepository.save(studentEntity);
+            return ResponseEntity.ok().body(StudentEntityToDTO.iniStudentDTO(studentEntity));
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
+        }
     }
 
-    public void modifyStuedent(int id, StudentInputDTO studentInputDTO){
+    @Transactional(rollbackOn = SQLException.class)
+    public ResponseEntity<Object> modifyStuedent(int id, StudentInputDTO studentInputDTO) throws Exception{
+        validationStudent(studentInputDTO);
 
+        Optional<StudentEntity> studentOptional = studentRepository.findById(id);
+        Optional<ProfessorEntity> professorOptional = professorRepository.findById(studentInputDTO.getProfessor().getId_profesor());
+        Optional<PersonEntity> personOptional = personRepository.findById(studentInputDTO.getPerson().getId_person());
+
+        if(studentOptional.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException")); }
+        if(professorOptional.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Professor)")); }
+        if(personOptional.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Person)")); }
+
+        StudentEntity studentEntity = StudentDTOToEntity.iniStudentEntity(studentInputDTO);
+        studentEntity.setProfessor(professorOptional.get());
+        studentEntity.setPerson(personOptional.get());
+
+        try{
+            studentRepository.save(studentEntity);
+
+            return ResponseEntity.ok().body(StudentEntityToDTO.iniStudentDTO(studentEntity));
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
+        }
     }
 
-    public ResponseEntity<Object> deleteStudent(int id){
+    @Transactional(rollbackOn = SQLException.class)
+    public ResponseEntity<Object> deleteStudent(int id) throws Exception{
         Optional<StudentEntity> studentEntityOptional = studentRepository.findById(id);
-        if(studentEntityOptional.isEmpty()){ return ResponseEntity.status(404).body("EntityNotFoundException");}
+        if(studentEntityOptional.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Professor ID)"));}
 
-        studentRepository.delete(studentEntityOptional.get());
-
-        return ResponseEntity.ok().body("Row deleted successfully");
+        try{
+            studentRepository.delete(studentEntityOptional.get());
+            return ResponseEntity.ok().body("Row deleted successfully");
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
+        }
     }
 
     public void validationStudent(StudentInputDTO studentInputDTO) throws Exception{
         if(studentInputDTO.getNum_hours_week() == null){ throw new Exception("Num hours week field cannot be null"); }
+        if(studentInputDTO.getProfessor().getId_profesor() == null){ throw new Exception("Professor field cannot be null"); }
+        if(studentInputDTO.getPerson().getId_person() == null){ throw new Exception("Person field cannot be null"); }
     }
 }
