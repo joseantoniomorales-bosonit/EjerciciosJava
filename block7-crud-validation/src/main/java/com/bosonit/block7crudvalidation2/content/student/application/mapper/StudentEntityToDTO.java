@@ -1,5 +1,7 @@
 package com.bosonit.block7crudvalidation2.content.student.application.mapper;
 
+import com.bosonit.block7crudvalidation2.content.person.application.mapper.PersonEntityToDTO;
+import com.bosonit.block7crudvalidation2.content.professor.application.mapper.ProfessorEntityToDTO;
 import com.bosonit.block7crudvalidation2.content.student.domain.StudentEntity;
 import com.bosonit.block7crudvalidation2.content.student.infrastructure.dto.StudentFullOutputDTO;
 import com.bosonit.block7crudvalidation2.content.student.infrastructure.dto.StudentOutputDTO;
@@ -15,6 +17,8 @@ public class StudentEntityToDTO {
         studentDTO.setComents(student.getComments());
         studentDTO.setBranch(student.getBranch());
         studentDTO.setNum_hours_week(student.getNum_hours_week());
+        studentDTO.setPerson(PersonEntityToDTO.iniPersonDTO(student.getPerson()));
+        studentDTO.setProfessor(ProfessorEntityToDTO.iniProfessorDTO(student.getProfessor()));
 
         return studentDTO;
     }

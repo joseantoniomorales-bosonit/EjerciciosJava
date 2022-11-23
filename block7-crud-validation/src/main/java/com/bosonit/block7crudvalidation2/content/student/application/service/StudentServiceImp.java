@@ -26,7 +26,6 @@ public class StudentServiceImp implements StudentService {
     StudentRepository studentRepository;
     @Autowired
     ProfessorRepository professorRepository;
-
     @Autowired
     PersonRepository personRepository;
 
@@ -36,7 +35,7 @@ public class StudentServiceImp implements StudentService {
 
     public ResponseEntity<Object> findById(int id, String outputType){
         Optional<StudentEntity> student = studentRepository.findById(id);
-        if(student.isEmpty()) { ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException")); }
+        if(student.isEmpty()) { return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString()); }
 
         switch (outputType) {
             case "full" -> {
@@ -47,7 +46,6 @@ public class StudentServiceImp implements StudentService {
             }
             default -> {
                 String msg = "EntityNotFoundException [Output type:"+outputType+" -> is not acceptable]";
-                System.out.println(msg);
                 return ResponseEntity.status(404).body(new CustomError(new Date(), 404,msg).toString());
             }
         }
