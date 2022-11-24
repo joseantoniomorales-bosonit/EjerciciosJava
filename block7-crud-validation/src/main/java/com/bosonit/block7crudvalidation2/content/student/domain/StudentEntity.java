@@ -27,6 +27,7 @@ public class StudentEntity {
     private String branch;
 
     @OneToOne
+    @JoinColumn(name = "id_persona")
     private PersonEntity person;
 
     @ManyToOne(fetch = FetchType.LAZY)

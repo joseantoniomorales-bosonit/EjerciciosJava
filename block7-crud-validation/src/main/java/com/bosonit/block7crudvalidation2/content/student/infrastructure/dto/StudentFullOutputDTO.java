@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class StudentFullOutputDTO {
-    private Integer id;
+    private Integer id_student;
     private Integer num_hours_week;
 
     private String comments;

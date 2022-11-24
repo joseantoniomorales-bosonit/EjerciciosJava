@@ -7,29 +7,67 @@ import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.repository.PersonRepository;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.input.PersonInputDTO;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.output.PersonOutputDTO;
+import com.bosonit.block7crudvalidation2.content.professor.application.mapper.ProfessorEntityToDTO;
+import com.bosonit.block7crudvalidation2.content.professor.domain.ProfessorEntity;
+import com.bosonit.block7crudvalidation2.content.professor.infrastructure.repository.ProfessorRepository;
+import com.bosonit.block7crudvalidation2.content.student.application.mapper.StudentEntityToDTO;
+import com.bosonit.block7crudvalidation2.content.student.domain.StudentEntity;
+import com.bosonit.block7crudvalidation2.content.student.infrastructure.repository.StudentRepository;
 import com.bosonit.block7crudvalidation2.exception.CustomError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PersonServiceImp implements PersonService{
     @Autowired
     PersonRepository personRepository;
+    @Autowired
+    ProfessorRepository professorRepository;
+    @Autowired
+    StudentRepository studentRepository;
     public List<PersonOutputDTO> getAll(){
         //DTO
         return PersonEntityToDTO.iniPersonDTO(personRepository.findAll());
     }
 
-    public Optional<PersonEntity> findById(int id_person){
-        return personRepository.findById(id_person);
+    public ResponseEntity<Object> findById(int id_person, String outputType){
+        Optional<PersonEntity> personOptional = personRepository.findById(id_person);
+        if(personOptional.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString()); }
+
+        switch (outputType){
+            case "full" -> {
+                if(personRepository.isProfessor(id_person) == 1){
+                    return ResponseEntity.ok().body(ProfessorEntityToDTO.iniProfessorFullDTO(professorRepository.findByIdPerson(id_person).get()));
+                }
+                if(personRepository.isStudent(id_person) == 1){
+                    return ResponseEntity.ok().body(StudentEntityToDTO.iniStudentFullDTO(studentRepository.findByIdPerson(id_person).get()));
+                }
+            }
+            case "simple" -> {
+                return ResponseEntity.ok().body(PersonEntityToDTO.iniPersonDTO(personOptional.get()));
+            }
+            default ->{
+                return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString());
+            }
+        }
+
+        return ResponseEntity.ok().body(PersonEntityToDTO.iniPersonDTO(personOptional.get()));
+    }
+
+    public void findByIdAndProfessor(int id_person){
+        Map<String,String> sqlResult = personRepository.findByIdAndProfessor(id_person);
+        if(sqlResult.isEmpty()){
+            System.out.println("vacio");
+        }
+
+        personRepository.findByIdAndProfessor(id_person).entrySet().forEach(System.out::println);
     }
 
     public List<PersonEntity> findByUsername(String username){

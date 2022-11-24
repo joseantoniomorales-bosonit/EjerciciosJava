@@ -3,8 +3,8 @@ package com.bosonit.block7crudvalidation2.content.person.application.mapper;
 import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.output.PersonOutputDTO;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PersonEntityToDTO {
     public static PersonOutputDTO iniPersonDTO(PersonEntity person){
@@ -25,12 +25,6 @@ public class PersonEntityToDTO {
     }
 
     public static List<PersonOutputDTO> iniPersonDTO(List<PersonEntity> person){
-        List<PersonOutputDTO> personDTO = new ArrayList<>();
-
-        for(PersonEntity i : person){
-            personDTO.add(iniPersonDTO(i));
-        }
-
-        return personDTO;
+        return person.stream().map(PersonEntityToDTO::iniPersonDTO).collect(Collectors.toList());
     }
 }

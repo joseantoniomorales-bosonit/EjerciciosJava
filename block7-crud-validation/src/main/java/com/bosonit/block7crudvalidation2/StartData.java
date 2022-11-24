@@ -38,8 +38,12 @@ public class StartData {
         PersonEntity person = new PersonEntity("josemo", "contrazeña", "jose",
                 "morales", "joseantonio.morales@bosonit.com",
                 "mi_email@personal.com", "Malaga");
+        PersonEntity person2 = new PersonEntity("Lucia", "contrazeña", "Lucia",
+                "Gil", "lucia.gil@bosonit.com",
+                "mi_email@personal.com", "Malaga");
 
         personRepository.save(person);
+        personRepository.save(person2);
 
         ProfessorEntity professor = new ProfessorEntity("","Java",person);
         professorRepository.save(professor);
@@ -48,7 +52,7 @@ public class StartData {
         courseRepository.save(coursePHP);
         courseRepository.save(new CourseEntity("React","", LocalDate.now()));
 
-        StudentEntity student = new StudentEntity(30,"","Backend",person,professor, courseEntityList);
+        StudentEntity student = new StudentEntity(30,"","Backend",person2,professor, courseEntityList);
         studentRepository.save(student);
     }
 }

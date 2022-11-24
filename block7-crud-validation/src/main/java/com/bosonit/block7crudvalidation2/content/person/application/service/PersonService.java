@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface PersonService {
     List<PersonOutputDTO> getAll();
-    Optional<PersonEntity> findById(int id_person);
+    ResponseEntity<Object> findById(int id_person, String outputType);
     PersonOutputDTO addPerson(PersonInputDTO personInputDTO) throws Exception;
     ResponseEntity<Object> modifyPerson(int id_persona, PersonInputDTO personModDTO) throws Exception;
     ResponseEntity<Object> deletePerson(int id);

@@ -44,14 +44,14 @@ public class CourseServiceImp implements CourseService {
     }
 
     @Transactional(rollbackOn = SQLException.class)
-    public void createCourse(CourseInputDTO courseInputDTO) throws Exception{
+    public ResponseEntity<Object> createCourse(CourseInputDTO courseInputDTO) throws Exception{
         validationCouse(courseInputDTO); //Validacion de los campos
 
         Optional<StudentEntity> studentOptional = studentRepository.findById(courseInputDTO.getStudent().getId());
         Optional<ProfessorEntity> professorOptional = professorRepository.findById(courseInputDTO.getProfessor().getId_profesor());
 
-        if(studentOptional.isEmpty()){ ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Student)").toString()); }
-        if(professorOptional.isEmpty()){ ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Professor)").toString()); }
+        if(studentOptional.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Student)").toString()); }
+        if(professorOptional.isEmpty()){ return  ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Professor)").toString()); }
 
         CourseEntity courseEntity = CourseDTOToEntity.iniCourseEntity(courseInputDTO);
        // courseEntity.setStudent(studentOptional.get());
@@ -60,7 +60,7 @@ public class CourseServiceImp implements CourseService {
         try{
             courseRepository.save(courseEntity);
 
-            ResponseEntity.ok().body(CourseEntityToDTO.iniCourseDTO(courseEntity));
+            return ResponseEntity.ok().body(CourseEntityToDTO.iniCourseDTO(courseEntity));
         }catch (Exception e){
             e.printStackTrace();
             throw new SQLException();

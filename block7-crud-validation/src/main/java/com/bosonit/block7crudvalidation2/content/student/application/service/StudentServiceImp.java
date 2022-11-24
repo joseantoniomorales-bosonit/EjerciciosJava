@@ -55,6 +55,7 @@ public class StudentServiceImp implements StudentService {
     public ResponseEntity<Object> createStudent(StudentInputDTO studentInputDTO) throws Exception{
         validationStudent(studentInputDTO);//Validacion de student
 
+
         Optional<ProfessorEntity> professor = professorRepository.findById(studentInputDTO.getProfessor().getId_profesor());
         Optional<PersonEntity> person = personRepository.findById(studentInputDTO.getPerson().getId_person());
 
@@ -66,8 +67,13 @@ public class StudentServiceImp implements StudentService {
         studentEntity.setProfessor(professor.get());//Seteo el objeto professor con el que tiene relacion
         studentEntity.setPerson(person.get());//Lo mismo pero con person
 
+        if(studentRepository.countWithIdPerson(studentEntity.getPerson().getId_person()) != 0){
+            throw new Exception("There is already a professor with that id_person");
+        }
+
         try{
             studentRepository.save(studentEntity);
+
             return ResponseEntity.ok().body(StudentEntityToDTO.iniStudentDTO(studentEntity));
         }catch (Exception e){
             e.printStackTrace();

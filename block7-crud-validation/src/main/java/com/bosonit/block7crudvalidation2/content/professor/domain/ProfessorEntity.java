@@ -1,6 +1,7 @@
 package com.bosonit.block7crudvalidation2.content.professor.domain;
 
 import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
+import com.bosonit.block7crudvalidation2.content.professor.infrastructure.dto.input.ProfessorInputDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,5 +29,11 @@ public class ProfessorEntity {
         this.comments = comments;
         this.branch = branch;
         this.person = person;
+    }
+    public ProfessorEntity fromDTO(ProfessorInputDTO professorInputDTO) {
+        this.comments = professorInputDTO.getComments();
+        this.branch = professorInputDTO.getBranch();
+        this.person = professorInputDTO.getPerson();
+        return this;
     }
 }

@@ -17,6 +17,7 @@ public class StudentEntityToDTO {
         studentDTO.setComents(student.getComments());
         studentDTO.setBranch(student.getBranch());
         studentDTO.setNum_hours_week(student.getNum_hours_week());
+
         studentDTO.setPerson(PersonEntityToDTO.iniPersonDTO(student.getPerson()));
         studentDTO.setProfessor(ProfessorEntityToDTO.iniProfessorDTO(student.getProfessor()));
 
@@ -26,7 +27,7 @@ public class StudentEntityToDTO {
     public static StudentFullOutputDTO iniStudentFullDTO(StudentEntity student){
         StudentFullOutputDTO studentDTO = new StudentFullOutputDTO();
 
-        studentDTO.setId(student.getId());
+        studentDTO.setId_student(student.getId());
         studentDTO.setNum_hours_week(student.getNum_hours_week());
         studentDTO.setComments(student.getComments());
         studentDTO.setBranch(student.getBranch());

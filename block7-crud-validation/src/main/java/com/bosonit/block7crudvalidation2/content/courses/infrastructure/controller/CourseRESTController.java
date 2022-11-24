@@ -26,8 +26,8 @@ public class CourseRESTController {
     }
 
     @PostMapping
-    public void create(@RequestBody CourseInputDTO courseInputDTO){
-
+    public ResponseEntity<Object> create(@RequestBody CourseInputDTO courseInputDTO) throws Exception{
+        return courseService.createCourse(courseInputDTO);
     }
 
     @PutMapping("/{id}")

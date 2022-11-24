@@ -22,21 +22,19 @@ public class PersonRESTController {
 
     //OBTENER TODAS LAS PERSONAS
     @GetMapping("")
-    public List<PersonOutputDTO> getAll(){
+    public List<PersonOutputDTO> getAll(@RequestParam(defaultValue = "simple") String outputType){
         return personServiceImp.getAll();
     }
 
     //OBTENER PERSONA POR ID
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findById(@PathVariable(value = "id") Integer id){
-        Optional<PersonEntity> person = personServiceImp.findById(id);
+    public ResponseEntity<Object> findById(@PathVariable(value = "id") Integer id, @RequestParam(defaultValue = "simple") String outputType){
+        return personServiceImp.findById(id, outputType);
+    }
 
-        if(person.isPresent()){
-            //DTO
-            return ResponseEntity.ok().body(PersonEntityToDTO.iniPersonDTO(person.get()));
-        }
-
-        return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString());
+    @GetMapping("p/{id}")
+    public void findByIdAndProfessor(@PathVariable(value = "id") Integer id){
+        personServiceImp.findByIdAndProfessor(id);
     }
 
     @GetMapping("/name/{username}")
