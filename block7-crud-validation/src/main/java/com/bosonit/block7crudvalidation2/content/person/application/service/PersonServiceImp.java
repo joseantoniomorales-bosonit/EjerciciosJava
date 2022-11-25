@@ -1,6 +1,5 @@
 package com.bosonit.block7crudvalidation2.content.person.application.service;
 
-
 import com.bosonit.block7crudvalidation2.content.person.application.mapper.PersonDTOToEntity;
 import com.bosonit.block7crudvalidation2.content.person.application.mapper.PersonEntityToDTO;
 import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
@@ -18,11 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonServiceImp implements PersonService{
@@ -32,47 +31,74 @@ public class PersonServiceImp implements PersonService{
     ProfessorRepository professorRepository;
     @Autowired
     StudentRepository studentRepository;
-    public List<PersonOutputDTO> getAll(){
-        //DTO
-        return PersonEntityToDTO.iniPersonDTO(personRepository.findAll());
+    public List<Object> getAll(String outputType){
+       return personRepository.findAll().stream().map(p ->{
+            Optional optional = findOutputType(p.getId_person(), outputType);
+
+            if(optional.isPresent()){
+                if(optional.get() instanceof ProfessorEntity){
+                    return ProfessorEntityToDTO.iniProfessorFullDTO((ProfessorEntity) optional.get());
+                }
+
+                if(optional.get() instanceof StudentEntity){
+                    return StudentEntityToDTO.iniStudentFullDTO((StudentEntity) optional.get());
+                }
+            }
+
+            return PersonEntityToDTO.iniPersonDTO(p);
+        }).collect(Collectors.toList());
     }
 
     public ResponseEntity<Object> findById(int id_person, String outputType){
         Optional<PersonEntity> personOptional = personRepository.findById(id_person);
         if(personOptional.isEmpty()){ return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString()); }
 
-        switch (outputType){
-            case "full" -> {
-                if(personRepository.isProfessor(id_person) == 1){
-                    return ResponseEntity.ok().body(ProfessorEntityToDTO.iniProfessorFullDTO(professorRepository.findByIdPerson(id_person).get()));
-                }
-                if(personRepository.isStudent(id_person) == 1){
-                    return ResponseEntity.ok().body(StudentEntityToDTO.iniStudentFullDTO(studentRepository.findByIdPerson(id_person).get()));
-                }
+        Optional optional = findOutputType(id_person,outputType);
+
+        if(optional.isPresent()){
+            if(optional.get() instanceof ProfessorEntity){
+                return ResponseEntity.ok().body(ProfessorEntityToDTO.iniProfessorFullDTO((ProfessorEntity) optional.get()));
             }
-            case "simple" -> {
-                return ResponseEntity.ok().body(PersonEntityToDTO.iniPersonDTO(personOptional.get()));
-            }
-            default ->{
-                return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString());
+
+            if(optional.get() instanceof StudentEntity){
+                return ResponseEntity.ok().body(StudentEntityToDTO.iniStudentFullDTO((StudentEntity) optional.get()));
             }
         }
 
         return ResponseEntity.ok().body(PersonEntityToDTO.iniPersonDTO(personOptional.get()));
     }
 
-    public void findByIdAndProfessor(int id_person){
+    public List<PersonEntity> findByUsername(String username){
+        return personRepository.findByUsername(username);
+    }
+
+    private Optional findOutputType(int id_person,String outputType){
+        Optional<PersonEntity> personOptional = personRepository.findById(id_person);
+        switch (outputType){
+            case "full" -> {
+                if(personRepository.isProfessor(id_person) == 1){
+                    return professorRepository.findByIdPerson(id_person);
+                }
+                if(personRepository.isStudent(id_person) == 1){
+                    return studentRepository.findByIdPerson(id_person);
+                }
+            }
+            case "simple" -> {
+                return personOptional;
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    /* public void findByIdAndProfessor(int id_person){
         Map<String,String> sqlResult = personRepository.findByIdAndProfessor(id_person);
         if(sqlResult.isEmpty()){
             System.out.println("vacio");
         }
 
         personRepository.findByIdAndProfessor(id_person).entrySet().forEach(System.out::println);
-    }
-
-    public List<PersonEntity> findByUsername(String username){
-        return personRepository.findByUsername(username);
-    }
+    }*/
 
     @Transactional(rollbackOn = SQLException.class)
     public PersonOutputDTO addPerson(PersonInputDTO personInputDTO) throws Exception {

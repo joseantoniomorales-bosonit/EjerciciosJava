@@ -1,7 +1,6 @@
 package com.bosonit.block7crudvalidation2.content.person.infrastructure.controller;
 
 import com.bosonit.block7crudvalidation2.content.person.application.service.PersonServiceImp;
-import com.bosonit.block7crudvalidation2.content.person.application.mapper.PersonEntityToDTO;
 import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.input.PersonInputDTO;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.output.PersonOutputDTO;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/persona")
@@ -22,8 +20,8 @@ public class PersonRESTController {
 
     //OBTENER TODAS LAS PERSONAS
     @GetMapping("")
-    public List<PersonOutputDTO> getAll(@RequestParam(defaultValue = "simple") String outputType){
-        return personServiceImp.getAll();
+    public List<Object> getAll(@RequestParam(defaultValue = "simple") String outputType){
+        return personServiceImp.getAll(outputType);
     }
 
     //OBTENER PERSONA POR ID
@@ -32,10 +30,10 @@ public class PersonRESTController {
         return personServiceImp.findById(id, outputType);
     }
 
-    @GetMapping("p/{id}")
+    /*@GetMapping("p/{id}")
     public void findByIdAndProfessor(@PathVariable(value = "id") Integer id){
         personServiceImp.findByIdAndProfessor(id);
-    }
+    }*/
 
     @GetMapping("/name/{username}")
     public List<PersonEntity> findByName(@PathVariable(value = "username") String username){
