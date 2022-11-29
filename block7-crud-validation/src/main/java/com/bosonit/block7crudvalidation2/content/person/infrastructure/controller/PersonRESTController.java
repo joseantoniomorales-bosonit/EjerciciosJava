@@ -4,6 +4,7 @@ import com.bosonit.block7crudvalidation2.content.person.application.service.Pers
 import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.input.PersonInputDTO;
 import com.bosonit.block7crudvalidation2.exception.CustomError;
+import com.bosonit.block7crudvalidation2.feign.ProfessorFeign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,9 @@ import java.util.List;
 public class PersonRESTController {
     @Autowired
     PersonServiceImp personServiceImp;
+
+    @Autowired
+    ProfessorFeign professorFeign;
 
     //OBTENER TODAS LAS PERSONAS
     @GetMapping("")
@@ -72,7 +76,11 @@ public class PersonRESTController {
     public String getProfesor(@PathVariable int id) {
         String url = "http://localhost:8081/profesor/"+id;
 
-        //Lo correcto seria usar la funcion getForEntity, pero no me devuelve la entidad
         return new RestTemplate().getForObject(url, String.class);
+    }
+
+    @GetMapping("/feign/{id}")
+    public String profesorFeign(@PathVariable int id) {
+        return professorFeign.getProfesor(id);
     }
 }

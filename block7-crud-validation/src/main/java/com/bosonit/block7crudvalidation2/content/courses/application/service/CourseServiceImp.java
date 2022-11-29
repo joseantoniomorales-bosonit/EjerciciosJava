@@ -86,9 +86,12 @@ public class CourseServiceImp implements CourseService {
         if(professorOptional.isEmpty()){ ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Professor)").toString()); }
 
         try{
-            courseRepository.save(courseOptional.get());
+            CourseEntity course = CourseDTOToEntity.iniCourseEntity(courseInputDTO);
+            course.setId(courseOptional.get().getId());
 
-            ResponseEntity.ok().body(""); //
+            courseRepository.save(course);
+
+            ResponseEntity.ok().body(CourseEntityToDTO.iniCourseDTO(course)); //
         }catch (Exception e){
             e.printStackTrace();
             throw new SQLException();
