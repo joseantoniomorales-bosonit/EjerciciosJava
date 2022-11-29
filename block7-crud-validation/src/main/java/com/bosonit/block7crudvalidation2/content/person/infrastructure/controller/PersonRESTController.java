@@ -3,11 +3,11 @@ package com.bosonit.block7crudvalidation2.content.person.infrastructure.controll
 import com.bosonit.block7crudvalidation2.content.person.application.service.PersonServiceImp;
 import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.input.PersonInputDTO;
-import com.bosonit.block7crudvalidation2.content.person.infrastructure.dto.output.PersonOutputDTO;
 import com.bosonit.block7crudvalidation2.exception.CustomError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -64,7 +64,15 @@ public class PersonRESTController {
 
     //ELIMINAR UNA PERSONA
     @DeleteMapping("/del/{id}")
-    public Object deletePerson(@PathVariable(value = "id") Integer id){
+    public Object deletePerson(@PathVariable(value = "id") Integer id) throws Exception{
         return personServiceImp.deletePerson(id);
+    }
+
+    @GetMapping("/profesor/{id}")
+    public String getProfesor(@PathVariable int id) {
+        String url = "http://localhost:8081/profesor/"+id;
+
+        //Lo correcto seria usar la funcion getForEntity, pero no me devuelve la entidad
+        return new RestTemplate().getForObject(url, String.class);
     }
 }

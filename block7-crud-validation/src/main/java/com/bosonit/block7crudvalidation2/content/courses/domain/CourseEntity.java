@@ -2,10 +2,10 @@ package com.bosonit.block7crudvalidation2.content.courses.domain;
 
 import com.bosonit.block7crudvalidation2.content.professor.domain.ProfessorEntity;
 import com.bosonit.block7crudvalidation2.content.student.domain.StudentEntity;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -18,7 +18,7 @@ public class CourseEntity {
     private Integer id;
 
     /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profesor_id")
+    @JoinColumn(name = "id_profesor")
     private ProfessorEntity professor;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_student")

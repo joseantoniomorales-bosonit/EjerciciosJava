@@ -10,11 +10,12 @@ import com.bosonit.block7crudvalidation2.content.professor.infrastructure.reposi
 import com.bosonit.block7crudvalidation2.content.professor.infrastructure.dto.input.ProfessorInputDTO;
 import com.bosonit.block7crudvalidation2.content.professor.infrastructure.dto.output.ProfessorOutputDTO;
 import com.bosonit.block7crudvalidation2.exception.CustomError;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,8 @@ public class ProfessorServiceImp implements ProfessorService{
     ProfessorRepository professorRepository;
     @Autowired
     PersonRepository personRepository;
+
+
 
     public List<ProfessorOutputDTO> getAll(){
         return ProfessorEntityToDTO.iniProfessorDTO(professorRepository.findAll());
@@ -39,6 +42,10 @@ public class ProfessorServiceImp implements ProfessorService{
         }
 
         return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString());
+    }
+
+    public ProfessorEntity findByIdDTO(int id_profesor) throws FileNotFoundException {
+        return professorRepository.findById(id_profesor).orElseThrow(() -> new FileNotFoundException(""));
     }
 
     @Transactional(rollbackOn = SQLException.class)

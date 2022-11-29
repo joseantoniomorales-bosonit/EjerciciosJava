@@ -11,11 +11,11 @@ import com.bosonit.block7crudvalidation2.content.professor.infrastructure.reposi
 import com.bosonit.block7crudvalidation2.content.student.domain.StudentEntity;
 import com.bosonit.block7crudvalidation2.content.student.infrastructure.repository.StudentRepository;
 import com.bosonit.block7crudvalidation2.exception.CustomError;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +43,12 @@ public class CourseServiceImp implements CourseService {
         return ResponseEntity.ok().body(CourseEntityToDTO.iniCourseDTO(courseOptional.get()));//Devuelvo el DTO
     }
 
+    public ResponseEntity<Object> findCoursesById(int id){
+        List<CourseEntity> courseEntityList = courseRepository.findCoursesById(id);
+
+        return ResponseEntity.ok().body(CourseEntityToDTO.iniCourseDTO(courseEntityList));
+    }
+
     @Transactional(rollbackOn = SQLException.class)
     public ResponseEntity<Object> createCourse(CourseInputDTO courseInputDTO) throws Exception{
         validationCouse(courseInputDTO); //Validacion de los campos
@@ -67,6 +73,7 @@ public class CourseServiceImp implements CourseService {
         }
     }
 
+    @Transactional(rollbackOn = SQLException.class)
     public void modifyCourse(int id, CourseInputDTO courseInputDTO) throws Exception{
         validationCouse(courseInputDTO);
 
@@ -77,6 +84,15 @@ public class CourseServiceImp implements CourseService {
         if(courseOptional.isEmpty()){ ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Student)").toString()); }
         if(studentOptional.isEmpty()){ ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Student)").toString()); }
         if(professorOptional.isEmpty()){ ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Professor)").toString()); }
+
+        try{
+            courseRepository.save(courseOptional.get());
+
+            ResponseEntity.ok().body(""); //
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException();
+        }
     }
 
     @Transactional(rollbackOn = SQLException.class)

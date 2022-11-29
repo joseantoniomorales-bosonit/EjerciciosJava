@@ -13,11 +13,11 @@ import com.bosonit.block7crudvalidation2.content.student.application.mapper.Stud
 import com.bosonit.block7crudvalidation2.content.student.domain.StudentEntity;
 import com.bosonit.block7crudvalidation2.content.student.infrastructure.repository.StudentRepository;
 import com.bosonit.block7crudvalidation2.exception.CustomError;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
@@ -141,12 +141,20 @@ public class PersonServiceImp implements PersonService{
     }
 
     @Transactional(rollbackOn = SQLException.class)
-    public ResponseEntity<Object> deletePerson(int id){
+    public ResponseEntity<Object> deletePerson(int id) throws Exception{
         Optional<PersonEntity> person = personRepository.findById(id);
 
         if(person.isPresent()){
-            personRepository.delete(person.get());
-            return ResponseEntity.ok().body("Row deleted successfully");
+            if(personRepository.isDelete(person.get().getId_person()) == 0){
+                try{
+                    personRepository.delete(person.get());
+                    return ResponseEntity.ok().body("Row deleted successfully");
+                }catch (Exception e){
+                    e.printStackTrace();
+                    throw new SQLException();
+                }
+            }
+            return ResponseEntity.ok().body("This person is a professor or a student, cannot be deleted");
         }
 
         return ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException").toString());

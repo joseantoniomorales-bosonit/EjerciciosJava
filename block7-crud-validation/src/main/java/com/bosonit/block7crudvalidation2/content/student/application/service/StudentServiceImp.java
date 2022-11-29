@@ -1,6 +1,9 @@
 package com.bosonit.block7crudvalidation2.content.student.application.service;
 
 
+import com.bosonit.block7crudvalidation2.content.courses.domain.CourseEntity;
+import com.bosonit.block7crudvalidation2.content.courses.infrastructure.dto.CourseInputDTO;
+import com.bosonit.block7crudvalidation2.content.courses.infrastructure.repository.CourseRepository;
 import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
 import com.bosonit.block7crudvalidation2.content.person.infrastructure.repository.PersonRepository;
 import com.bosonit.block7crudvalidation2.content.professor.domain.ProfessorEntity;
@@ -11,14 +14,15 @@ import com.bosonit.block7crudvalidation2.content.student.domain.StudentEntity;
 import com.bosonit.block7crudvalidation2.content.student.infrastructure.repository.StudentRepository;
 import com.bosonit.block7crudvalidation2.content.student.infrastructure.dto.StudentInputDTO;
 import com.bosonit.block7crudvalidation2.exception.CustomError;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import java.nio.file.FileSystemNotFoundException;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImp implements StudentService {
@@ -28,6 +32,8 @@ public class StudentServiceImp implements StudentService {
     ProfessorRepository professorRepository;
     @Autowired
     PersonRepository personRepository;
+    @Autowired
+    CourseRepository courseRepository;
 
     public ResponseEntity<Object> findAll(){
         return ResponseEntity.ok().body(StudentEntityToDTO.iniStudentDTO(studentRepository.findAll()));
@@ -79,6 +85,37 @@ public class StudentServiceImp implements StudentService {
             e.printStackTrace();
             throw new SQLException();
         }
+    }
+
+    public void addCourses(int id, List<CourseInputDTO> courseInputDTOs){
+        Optional<StudentEntity> studentEntity = studentRepository.findById(id);
+        if(studentEntity.isEmpty()){ ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Person)").toString()); }
+
+        List<CourseEntity> courseEntities = courseInputDTOs.stream().map(p -> courseRepository.findById(p.getId()).get()).toList();
+        courseEntities.addAll(studentEntity.get().getCourse());
+
+        Set<CourseEntity> coursesNoRepeat = new HashSet<>(courseEntities);//Para elminiar repetidos
+        courseEntities.clear();
+        courseEntities.addAll(coursesNoRepeat);
+
+        studentEntity.get().setCourse(courseEntities);//Asignamos la lista de cursos
+
+        studentRepository.save(studentEntity.get());
+    }
+
+    public void removeCourses(int id, List<CourseInputDTO> courseInputDTOs){
+        //Optional<StudentEntity> studentEntity = studentRepository.findById(id);
+        //if(studentEntity.isEmpty()){ ResponseEntity.status(404).body(new CustomError(new Date(), 404,"EntityNotFoundException (Person)").toString()); }
+
+        StudentEntity student = studentRepository.findById(id).orElseThrow(() -> new FileSystemNotFoundException("Student not found"));
+        List<CourseEntity> courseEntities = student.getCourse();
+
+        List<CourseEntity> courseToDelete = new ArrayList<>();
+        //cursos que queremos eliminar del estudiante
+        courseToDelete.stream().map(c -> courseRepository.findById(c.getId())).filter(Objects::nonNull).collect(Collectors.toList());
+
+        student.setCourse(courseEntities.stream().filter(courseToDelete::contains).collect(Collectors.toList()));
+        studentRepository.save(student);
     }
 
     @Transactional(rollbackOn = SQLException.class)

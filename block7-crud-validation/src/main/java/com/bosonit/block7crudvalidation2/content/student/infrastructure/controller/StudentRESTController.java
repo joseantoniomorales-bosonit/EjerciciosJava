@@ -1,5 +1,6 @@
 package com.bosonit.block7crudvalidation2.content.student.infrastructure.controller;
 
+import com.bosonit.block7crudvalidation2.content.courses.infrastructure.dto.CourseInputDTO;
 import com.bosonit.block7crudvalidation2.content.student.application.service.StudentService;
 import com.bosonit.block7crudvalidation2.content.student.application.service.StudentServiceImp;
 import com.bosonit.block7crudvalidation2.content.student.infrastructure.dto.StudentInputDTO;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/estudiantes")
@@ -34,6 +36,11 @@ public class StudentRESTController {
             e.printStackTrace();
             return ResponseEntity.status(422).body(new CustomError(new Date(), 422,"UnprocessableEntityException").toString());
         }
+    }
+
+    @PostMapping("addCourse/{id}")
+    public void addCourses(@PathVariable(name="id") int id, @RequestBody List<CourseInputDTO> courseInputDTOs){
+        studentService.addCourses(id, courseInputDTOs);
     }
 
     @PutMapping("/{id}")

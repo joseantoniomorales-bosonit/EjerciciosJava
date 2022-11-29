@@ -25,14 +25,19 @@ public class CourseRESTController {
         return courseService.findById(id);
     }
 
+    @GetMapping("estudiante/{id}")
+    public ResponseEntity<Object> getCoursesById(@PathVariable(name="id") int id){
+         return courseService.findCoursesById(id);
+    }
+
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody CourseInputDTO courseInputDTO) throws Exception{
         return courseService.createCourse(courseInputDTO);
     }
 
     @PutMapping("/{id}")
-    public void modify(@PathVariable(name="id") int id, @RequestBody CourseInputDTO courseInputDTO){
-
+    public void modify(@PathVariable(name="id") int id, @RequestBody CourseInputDTO courseInputDTO) throws Exception {
+        courseService.modifyCourse(id, courseInputDTO);
     }
 
     @DeleteMapping("/{id}")

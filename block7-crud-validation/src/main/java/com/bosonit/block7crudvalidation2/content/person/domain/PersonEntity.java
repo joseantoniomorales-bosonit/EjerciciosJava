@@ -1,9 +1,9 @@
 package com.bosonit.block7crudvalidation2.content.person.domain;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity

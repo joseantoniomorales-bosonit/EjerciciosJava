@@ -6,7 +6,7 @@ import com.bosonit.block7crudvalidation2.content.professor.domain.ProfessorEntit
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity

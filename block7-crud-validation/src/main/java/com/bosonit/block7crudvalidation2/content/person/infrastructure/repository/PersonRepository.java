@@ -25,4 +25,11 @@ public interface PersonRepository extends JpaRepository<PersonEntity,Integer> {
 
     @Query(value = "select count(*) from estudiantes where id_persona=?1", nativeQuery = true)
     int isStudent(int id);
+
+    @Query(value="select " +
+            "sum((select count(*) from estudiantes where id_persona = ?1)+" +
+            "(select count(*) from profesores where id_persona = ?1))" +
+            "from persona " +
+            "where id_person = ?1", nativeQuery = true)
+    int isDelete(int id);
 }

@@ -10,8 +10,8 @@ import java.time.LocalDate;
 public class CourseOutputDTO {
     private Integer id;
 
-    private ProfessorEntity professor;
-    private StudentEntity student;
+   /* private ProfessorEntity professor;
+    private StudentEntity student;*/
 
     private String name;
     private String comment;

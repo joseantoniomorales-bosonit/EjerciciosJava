@@ -2,10 +2,10 @@ package com.bosonit.block7crudvalidation2.content.professor.domain;
 
 import com.bosonit.block7crudvalidation2.content.person.domain.PersonEntity;
 import com.bosonit.block7crudvalidation2.content.professor.infrastructure.dto.input.ProfessorInputDTO;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 @Entity
 @Table(name="profesores")

@@ -13,5 +13,5 @@ public interface PersonService {
     ResponseEntity<Object> findById(int id_person, String outputType);
     PersonOutputDTO addPerson(PersonInputDTO personInputDTO) throws Exception;
     ResponseEntity<Object> modifyPerson(int id_persona, PersonInputDTO personModDTO) throws Exception;
-    ResponseEntity<Object> deletePerson(int id);
+    ResponseEntity<Object> deletePerson(int id) throws Exception;
 }

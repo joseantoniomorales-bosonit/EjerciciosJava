@@ -7,7 +7,9 @@ import com.bosonit.block7crudvalidation2.exception.CustomError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class ProfessorRESTController {
         return professorService.getAll();
     }
 
-    @GetMapping("show/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value="id") Integer id){
         return professorService.findById(id);
     }
